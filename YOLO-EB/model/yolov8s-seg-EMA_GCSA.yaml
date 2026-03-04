@@ -1,0 +1,45 @@
+nc: 2  # smoke + fire
+depth_multiple: 0.33
+width_multiple: 0.50
+
+# ===== Backbone =====
+backbone:
+  - [-1, 1, Conv, [64, 3, 2]]
+  - [-1, 1, Conv, [128, 3, 2]]
+  - [-1, 3, C2fGhost_EMALite, [128,2]] # P2/4 低层轻量化
+  - [-1, 1, Conv, [256, 3, 2]]
+  - [-1, 3, C2fGhost_EMALite, [256,3]] # P3/8 中层增强
+  - [-1, 1, Conv, [512, 3, 2]]
+  - [-1, 3, C2f, [512, True]]
+  - [-1, 1, Conv, [1024, 3, 2]]
+  - [-1, 3, C2f, [1024, True]]
+  - [-1, 1, SPPF, [1024, 5]]
+
+# ===== Head =====
+head:
+  # 上采样 + 融合 P4
+  - [-1, 1, nn.Upsample, [None, 2, 'nearest']]
+  - [[-1, 6], 1, Concat, [1]]
+  - [-1, 3, C2fGhost_EMALite, [512,2]]
+  - [-1, 1, GCSA, [512]]
+
+  # 上采样 + 融合 P3
+  - [-1, 1, nn.Upsample, [None, 2, 'nearest']]
+  - [[-1, 4], 1, Concat, [1]]
+  - [-1, 3, C2fGhost_EMALite, [256,2]]
+  - [-1, 1, GCSA, [256]]
+
+  # 下采样 P3→P4 + 融合
+  - [-1, 1, DWConv, [256, 3, 2]]
+  - [[-1, 13], 1, Concat, [1]]
+  - [-1, 3, C2fGhost_EMALite, [512,2]]
+  - [-1, 1, GCSA, [512]]
+
+  # 下采样 P4→P5 + 融合
+  - [-1, 1, DWConv, [512, 3, 2]]
+  - [[-1, 9], 1, Concat, [1]]
+  - [-1, 3, C2fGhost_EMALite, [1024,2]]
+  - [-1, 1, GCSA, [1024]]
+
+  # Segment head 输入 P3, P4, P5
+  - [[17, 21, 25], 1, Segment, [nc, 32, 256]]
