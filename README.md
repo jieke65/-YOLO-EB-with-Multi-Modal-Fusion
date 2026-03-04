@@ -1,6 +1,6 @@
 # YOLO-EB-with-Multi-Modal-Fusion
 Source code for the paper:An Enhanced Fire Perception Framework for Firefighting Robots: ECA-BiFPN Boosted YOLO-EB with Multi-Modal Fusion. Manuscript ID: IEEE LATAM Submission ID: 10447
-# Author：
+## Author：
 Botao Ni，
 Lei Huang，
 Ying Xiang，
@@ -11,9 +11,9 @@ Jingjing Yang，
 Hao Tang
 ![yolov8-EB](https://github.com/user-attachments/assets/a2b1951c-1bff-4ccc-8c39-1bfd42402617)
 
-# Usage
+## Usage
 
-# Environment
+## Environment
 a.Please run environment. yml while ensuring that the software system has Conda.
 ```
 conda env create -f environment.yml
@@ -22,11 +22,11 @@ b.Please store the dataset folder and program files in the same directory.
 ```
 .
 ├── data
-├── models
+├── model
 ├── my_train.py
 ├── environment.yml
 ```
-# Run
+## Run
 ```
 Run my_train.py
 ```
