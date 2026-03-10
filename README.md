@@ -27,6 +27,10 @@ Source code for the paper:An Enhanced Fire Perception Framework for Firefighting
 Please download the dataset（FSD：For flame segmentation training）, and decompress it at the root folder of this repository. The dataset can be found [here](https://github.com/suyixuan123s/Fire-Segmentation-Dataset).
 ## Environment
 a.Please run environment. yml while ensuring that the software system has Conda.
+python=3.8.20=h8205438_0
+- pytorch-cuda=12.1=hde6ce7c_6
+- pytorch-mutex=1.0=cpu
+python=3.8.20=h8205438_0
 ```
 conda env create -f environment.yml
 ```
